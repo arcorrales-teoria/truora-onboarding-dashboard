@@ -1,52 +1,120 @@
-# Dashboard · Ruteo de validación de identidad por WhatsApp
+# Dashboard de ruteo · Validación de identidad por WhatsApp
 
-Dashboard de demostración comercial que muestra, con estética tipo Yuno, cómo Truora rutea una validación de identidad iniciada por WhatsApp: bloques de validación, recorrido de la decisión, cobertura LATAM (con Chile como foco del demo) y fuentes de verificación por país.
+## ¿Qué es esto?
 
-## Correr en local
+Es un dashboard de demostración para mostrarle a prospectos y clientes **qué pasa por dentro cuando una persona valida su identidad por WhatsApp con Truora**.
+
+Hoy ese proceso es invisible: el usuario final solo ve una conversación de WhatsApp, y el cliente solo ve el resultado ("aprobado" o "rechazado"). Este dashboard hace visible todo lo que ocurre en el medio: por qué ruta pasó la validación, qué productos de Truora se ejecutaron, qué porcentaje del tráfico va por cada camino, contra qué fuentes oficiales se verificó y en qué países opera el flujo.
+
+La idea es usarlo en demos comerciales: se abre en el navegador, se recorre de arriba a abajo y el prospecto entiende el producto completo en un par de minutos, sin diapositivas.
+
+**Importante:** por ahora todos los números son datos de demostración (están inventados, pero son realistas). El proyecto está preparado para que ingeniería conecte los datos reales más adelante; abajo se explica exactamente dónde.
+
+## ¿Qué se ve en la pantalla?
+
+Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con una barra lateral de navegación a la izquierda. De arriba a abajo hay cinco secciones:
+
+### 1. Resumen del flujo
+Cuatro indicadores grandes y una gráfica:
+
+- **Conversión total del flujo** (la celda índigo, el número héroe): de cada 100 personas que empiezan la validación en WhatsApp, cuántas la terminan con éxito.
+- **Aprobación documento + facial**: qué tan bien funciona la validación principal.
+- **Éxito en reintentos**: cuántas validaciones que fallaron a la primera se recuperan al reintentar.
+- **Tiempo mediano de validación**: cuánto tarda una persona típica en completar todo.
+
+La gráfica de al lado muestra la conversión mes a mes (enero a junio). Al pasar el mouse por encima aparece el valor exacto de cada mes.
+
+### 2. Recorrido de la validación (la sección estrella)
+Un diagrama de flujo estilo "canvas de ruteo" que cuenta la historia completa de una validación:
+
+1. **WhatsApp**: la persona escribe al número del cliente y se abre el flujo (con su ID, canal y nombre del flujo, como se vería en producción).
+2. **Condición de país y documento**: el sistema decide la ruta según el país del teléfono (CL, MX, CO, PE) y el tipo de documento (cédula, DNI, INE).
+3. **Ruteo inteligente**: el motor elige la mejor ruta para maximizar conversión. Las insignias sobre las líneas muestran el reparto del tráfico: el 72% va por **documento + facial** (la ruta principal) y el 28% por **solo documento** (la ruta de respaldo).
+4. **Señales en paralelo**: mientras tanto, sin fricción para el usuario, se validan el teléfono (OTP por WhatsApp), el correo y la geolocalización. Van con línea punteada porque corren al mismo tiempo que el resto.
+5. **Antecedentes**: se consulta a la persona contra listas AML, PEP y registros locales.
+6. **Firma electrónica**: la persona acepta términos y firma el contrato en el mismo chat.
+7. **Decisión final**: aprobado (91.3%), revisión manual (6.2%) o rechazado (2.5%).
+
+Cada tarjeta muestra sus tasas de éxito/rechazo/error, igual que lo haría el producto real. Las líneas tienen un trazo animado que indica la dirección del flujo.
+
+### 3. Bloques de validación
+Los **7 productos de Truora** que componen el flujo, cada uno como una tarjeta con su interruptor de encendido/apagado (los toggles funcionan, para jugar con ellos en el demo):
+
+- Validación de documento y facial
+- Validación de documento
+- Validación de teléfono
+- Validación de correo
+- Validación de antecedentes
+- Validación de firma electrónica
+- Geolocalización (apagada por defecto, para mostrar que se puede activar en vivo)
+
+El mensaje comercial de esta sección: el flujo se arma y se modifica **sin escribir código**.
+
+### 4. Cobertura
+Un mapa de Latinoamérica hecho con matriz de puntos (el estilo de mapa de Yuno), con **Chile resaltado en índigo y un marcador pulsante en Santiago**, porque el demo está ambientado en un onboarding chileno. Al lado, el panel de cobertura: 18 países, 60+ fuentes oficiales, 2.4M de validaciones al mes, y el ranking de principales mercados (Chile, México, Colombia, Perú, Brasil, Argentina) con su volumen.
+
+### 5. Fuentes de verificación
+Una tabla que responde la pregunta que siempre hacen los equipos de riesgo: *"¿contra qué validan?"*. Registro Civil (Chile), RENIEC (Perú), Registraduría (Colombia), INE (México), listas AML/PEP/sanciones y operadores móviles, con la cobertura y capacidades de cada fuente (biometría, OCR, vigencia, monitoreo continuo). Tiene un buscador arriba a la derecha.
+
+## Cómo correrlo
+
+Se necesita Node.js 20 o superior.
 
 ```bash
 npm install
 npm run dev
-# http://localhost:3000
+# abrir http://localhost:3000
 ```
 
-Build de producción: `npm run build && npm run start`.
+Para un build de producción: `npm run build && npm run start`.
 
-## Estructura
+No hay variables de entorno ni servicios externos: clonar, instalar y correr.
+
+## Cómo está construido
+
+- **Next.js 16** (App Router) + **TypeScript** + **Tailwind CSS v4**.
+- Componentes de **shadcn/ui** y **cult-ui**: los botones con textura (`TextureButton`, el CTA "Publicar ruta" usa la variante `accent` índigo), las tarjetas con textura (`TextureCard`, todas blancas con texto negro), la ventana de navegador simulada (`BrowserWindow`) y el fondo con grano (`TextureOverlay` tipo `noise` a opacidad baja).
+- La gráfica y el mapa son **SVG hechos a mano** (sin librerías de charts), para mantener el proyecto liviano y el estilo exacto.
+- El canvas de ruteo dibuja las conexiones midiendo la posición real de las tarjetas y **se escala solo** para que el proceso completo se vea sin scroll horizontal.
+- Tema claro fijo (es un asset de demo, se ve igual en cualquier máquina) y las animaciones respetan `prefers-reduced-motion`.
 
 ```
 src/
-  app/                    # Layout, página única y tokens de diseño (globals.css)
+  app/                    # Layout, la página y los tokens de diseño (globals.css)
   components/
-    dashboard/            # Secciones del dashboard (ver tabla de datos abajo)
-    ui/                   # shadcn + cult-ui (texture-button, texture-card,
-                          # texture-overlay, mock-browser-window, switch, ...)
-  data/                   # ← CAPA DE DATOS MOCK. Todo lo que se ve sale de aquí.
+    dashboard/            # Una pieza por sección: kpi-band, conversion-chart,
+                          # routing-canvas, product-blocks, latam-map,
+                          # coverage-panel, sources-table, flow-toolbar, shell
+    ui/                   # shadcn + cult-ui (texture-button, texture-card, ...)
+  data/                   # ← LA CAPA DE DATOS. Todo lo que se ve sale de aquí.
 ```
 
-## Conectar los data sources (para ingeniería)
+## Para ingeniería: cómo conectar los datos reales
 
-Todo el contenido es mock y vive en `src/data/`. Cada archivo exporta tipos + constantes y tiene un comentario `TODO(data)` con el endpoint sugerido. Para conectar datos reales basta con reemplazar la constante por un fetch que devuelva la misma forma; los componentes no necesitan cambios.
+Este es el punto más importante del repo. **Ningún componente tiene datos quemados**: todo lo que se muestra en pantalla sale de los archivos de `src/data/`, que exportan tipos de TypeScript + constantes mock. Cada archivo tiene un comentario `TODO(data)` con el endpoint sugerido.
 
-| Archivo | Alimenta | Endpoint sugerido |
+Para conectar una fuente real solo hay que reemplazar la constante por un fetch que devuelva **la misma forma**; los componentes no se tocan.
+
+| Archivo | Qué alimenta | Endpoint sugerido |
 | --- | --- | --- |
-| `data/kpis.ts` | Banda de KPIs | `GET /v1/metrics/identity-routing?channel=whatsapp&range=30d` |
-| `data/conversion.ts` | Gráfica de conversión mensual | `GET /v1/metrics/identity-routing/timeseries` |
-| `data/flow.ts` | Canvas del recorrido (nodos, conexiones, % por ruta) | `GET /v1/routing/flows/:id` |
-| `data/products.ts` | Toggles de bloques de validación | `GET /v1/flows/:id/steps` |
-| `data/coverage.ts` | Panel de cobertura por país | `GET /v1/metrics/identity-routing/by-country` |
-| `data/sources.ts` | Tabla de fuentes de verificación | `GET /v1/sources?region=latam` |
-| `data/map-data.ts` | Mapa de puntos LATAM (silueta estilizada y marcadores) | estático; solo cambiar marcadores |
+| `data/kpis.ts` | Los 4 indicadores del resumen | `GET /v1/metrics/identity-routing?channel=whatsapp&range=30d` |
+| `data/conversion.ts` | La gráfica de conversión mensual | `GET /v1/metrics/identity-routing/timeseries` |
+| `data/flow.ts` | El canvas del recorrido: nodos, conexiones, % por ruta y posiciones | `GET /v1/routing/flows/:id` |
+| `data/products.ts` | Los toggles de bloques de validación | `GET /v1/flows/:id/steps` |
+| `data/coverage.ts` | El panel de cobertura por país | `GET /v1/metrics/identity-routing/by-country` |
+| `data/sources.ts` | La tabla de fuentes de verificación | `GET /v1/sources?region=latam` |
+| `data/map-data.ts` | El mapa de puntos (silueta y marcadores) | Estático; solo cambiar marcadores si el foco deja de ser Chile |
 
-Sugerencia de implementación: convertir las secciones que lo necesiten a `async` Server Components y hacer el fetch en servidor, o exponer route handlers en `src/app/api/*` que lean de los servicios internos. Mientras el API no exista, el demo funciona 100% estático (ideal para Vercel).
+Sugerencia de implementación: convertir las secciones que lo necesiten a `async` Server Components y hacer el fetch del lado del servidor, o exponer route handlers en `src/app/api/*` que lean de los servicios internos. Mientras el API no exista, el demo funciona 100% estático.
 
-## Decisiones de diseño
+Detalle útil para el demo en vivo: los toggles de productos y el modo de prueba son estado local de React. Si se conectan a un API real, el vendedor podría encender un bloque durante la llamada y que el cambio sea de verdad.
 
-- **Estilo Yuno**: lienzo gris frío con grano (`TextureOverlay` tipo `noise`), retícula de puntos en el canvas de ruteo, índigo como único acento, tarjetas blancas con texto negro.
-- **Componentes cult-ui**: `TextureButton` (variante `accent` para el CTA primario), `TextureCardStyled` para todas las tarjetas y `BrowserWindow` (Chrome, sidebar izquierda) como marco del dashboard.
-- **Canvas de ruteo**: los nodos se posicionan desde `data/flow.ts`; las conexiones se dibujan en SVG midiendo los nodos reales y el lienzo se escala para mostrar el proceso completo sin scroll (con mínimo de legibilidad de 0.55).
-- **Tema fijo claro** y `prefers-reduced-motion` respetado en las animaciones (trazo de rutas y pulso de Santiago).
+## Cómo adaptarlo a otro país u otro cliente
+
+- **Cambiar el país foco**: en `data/coverage.ts` mover el flag `focus`, y en `data/map-data.ts` ajustar los marcadores (cada marcador tiene coordenadas de celda y un `side` para que la etiqueta no se encime con otra).
+- **Cambiar el nombre del flujo**: está en `components/dashboard/flow-toolbar.tsx` (el título "WhatsApp Onboarding · LATAM") y en el nodo de inicio de `data/flow.ts`.
+- **Cambiar rutas o porcentajes del canvas**: todo en `data/flow.ts`; las posiciones son coordenadas absolutas dentro del lienzo y las conexiones se declaran como pares `from → to`.
 
 ## Deploy
 
-Proyecto estático, sin variables de entorno. En Vercel: importar el repo y deploy directo (framework preset: Next.js).
+Es un sitio estático sin secretos. En Vercel: importar el repo, preset Next.js, deploy. Cualquier URL resultante sirve para compartir el demo con clientes.
