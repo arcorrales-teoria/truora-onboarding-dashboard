@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dashboard · Ruteo de validación de identidad por WhatsApp
 
-## Getting Started
+Dashboard de demostración comercial que muestra, con estética tipo Yuno, cómo Truora rutea una validación de identidad iniciada por WhatsApp: bloques de validación, recorrido de la decisión, cobertura LATAM (con Chile como foco del demo) y fuentes de verificación por país.
 
-First, run the development server:
+## Correr en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build de producción: `npm run build && npm run start`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estructura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/                    # Layout, página única y tokens de diseño (globals.css)
+  components/
+    dashboard/            # Secciones del dashboard (ver tabla de datos abajo)
+    ui/                   # shadcn + cult-ui (texture-button, texture-card,
+                          # texture-overlay, mock-browser-window, switch, ...)
+  data/                   # ← CAPA DE DATOS MOCK. Todo lo que se ve sale de aquí.
+```
 
-## Learn More
+## Conectar los data sources (para ingeniería)
 
-To learn more about Next.js, take a look at the following resources:
+Todo el contenido es mock y vive en `src/data/`. Cada archivo exporta tipos + constantes y tiene un comentario `TODO(data)` con el endpoint sugerido. Para conectar datos reales basta con reemplazar la constante por un fetch que devuelva la misma forma; los componentes no necesitan cambios.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Archivo | Alimenta | Endpoint sugerido |
+| --- | --- | --- |
+| `data/kpis.ts` | Banda de KPIs | `GET /v1/metrics/identity-routing?channel=whatsapp&range=30d` |
+| `data/conversion.ts` | Gráfica de conversión mensual | `GET /v1/metrics/identity-routing/timeseries` |
+| `data/flow.ts` | Canvas del recorrido (nodos, conexiones, % por ruta) | `GET /v1/routing/flows/:id` |
+| `data/products.ts` | Toggles de bloques de validación | `GET /v1/flows/:id/steps` |
+| `data/coverage.ts` | Panel de cobertura por país | `GET /v1/metrics/identity-routing/by-country` |
+| `data/sources.ts` | Tabla de fuentes de verificación | `GET /v1/sources?region=latam` |
+| `data/map-data.ts` | Mapa de puntos LATAM (silueta estilizada y marcadores) | estático; solo cambiar marcadores |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sugerencia de implementación: convertir las secciones que lo necesiten a `async` Server Components y hacer el fetch en servidor, o exponer route handlers en `src/app/api/*` que lean de los servicios internos. Mientras el API no exista, el demo funciona 100% estático (ideal para Vercel).
 
-## Deploy on Vercel
+## Decisiones de diseño
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Estilo Yuno**: lienzo gris frío con grano (`TextureOverlay` tipo `noise`), retícula de puntos en el canvas de ruteo, índigo como único acento, tarjetas blancas con texto negro.
+- **Componentes cult-ui**: `TextureButton` (variante `accent` para el CTA primario), `TextureCardStyled` para todas las tarjetas y `BrowserWindow` (Chrome, sidebar izquierda) como marco del dashboard.
+- **Canvas de ruteo**: los nodos se posicionan desde `data/flow.ts`; las conexiones se dibujan en SVG midiendo los nodos reales y el lienzo se escala para mostrar el proceso completo sin scroll (con mínimo de legibilidad de 0.55).
+- **Tema fijo claro** y `prefers-reduced-motion` respetado en las animaciones (trazo de rutas y pulso de Santiago).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Proyecto estático, sin variables de entorno. En Vercel: importar el repo y deploy directo (framework preset: Next.js).
