@@ -2,8 +2,10 @@ import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { CoveragePanel } from "@/components/dashboard/coverage-panel";
 import { KpiBand } from "@/components/dashboard/kpi-band";
 import { LatamConnectionsMap } from "@/components/dashboard/latam-connections-map";
+import { ProcessReel } from "@/components/dashboard/process-reel";
 import { ProductBlocks } from "@/components/dashboard/product-blocks";
 import { RoutingCanvas } from "@/components/dashboard/routing-canvas";
+import { Reveal } from "@/components/dashboard/reveal";
 import { Section } from "@/components/dashboard/section";
 import { SourcesTable } from "@/components/dashboard/sources-table";
 import { TruoraHubDiagram } from "@/components/dashboard/truora-hub-diagram";
@@ -11,6 +13,10 @@ import { TruoraHubDiagram } from "@/components/dashboard/truora-hub-diagram";
 export default function ResumenPage() {
   return (
     <div className="space-y-10 px-6 py-8 md:px-8">
+      <Reveal>
+        <ProcessReel />
+      </Reveal>
+
       <Section
         title="Resumen del flujo"
         description="Rendimiento de la validación de identidad iniciada por WhatsApp durante los últimos seis meses."
