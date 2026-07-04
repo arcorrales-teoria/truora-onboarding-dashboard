@@ -12,10 +12,12 @@ La idea es usarlo en demos comerciales: se abre en el navegador, se recorre de a
 
 ## ¿Qué se ve en la pantalla?
 
-Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con una barra lateral de navegación a la izquierda. De arriba a abajo hay cinco secciones:
+Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con el logo de Truora y una barra lateral de navegación funcional a la izquierda: **Resumen, Rutas, Playground, Conexiones, Riesgo, Reportes y Configuración** son páginas reales.
+
+La página de Resumen tiene cinco secciones:
 
 ### 1. Resumen del flujo
-Cuatro indicadores grandes y una gráfica:
+Cuatro indicadores grandes, cada uno con su mini gráfica de tendencia al lado, y una gráfica principal:
 
 - **Conversión total del flujo** (la celda índigo, el número héroe): de cada 100 personas que empiezan la validación en WhatsApp, cuántas la terminan con éxito.
 - **Aprobación documento + facial**: qué tan bien funciona la validación principal.
@@ -55,6 +57,27 @@ Un mapa de Latinoamérica hecho con matriz de puntos (el estilo de mapa de Yuno)
 
 ### 5. Fuentes de verificación
 Una tabla que responde la pregunta que siempre hacen los equipos de riesgo: *"¿contra qué validan?"*. Registro Civil (Chile), RENIEC (Perú), Registraduría (Colombia), INE (México), listas AML/PEP/sanciones y operadores móviles, con la cobertura y capacidades de cada fuente (biometría, OCR, vigencia, monitoreo continuo). Tiene un buscador arriba a la derecha.
+
+## El playground (la página para ver el producto en acción)
+
+En **/playground** se simula una validación completa en vivo, pensado para el momento "muéstramelo funcionando" del demo:
+
+- Eliges el **país** (CL, MX, CO, PE): cambia el documento, la fuente oficial y hasta el prefijo del teléfono del chat.
+- Eliges el **resultado** (aleatorio, aprobado, revisión manual o rechazado) para contar la historia que necesites.
+- Al presionar **Iniciar simulación** pasan tres cosas a la vez:
+  1. El **canvas de ruteo** se anima: cada nodo se enciende cuando le toca, las conexiones recorridas se pintan de índigo y el resto se atenúa.
+  2. Un **chat de WhatsApp simulado** muestra la conversación tal como la vive el usuario final (saludo, foto del documento, selfie, firma, resultado).
+  3. Un **log de eventos** registra cada paso con su timestamp: condición evaluada, ruta elegida por el ruteo inteligente, fuente consultada, señales en paralelo y decisión final notificada por webhook.
+
+Al terminar aparece la tarjeta de resultado (aprobado / revisión / rechazado) con la duración total. Se puede reiniciar y correr tantas veces como se quiera.
+
+## Las demás páginas
+
+- **Rutas**: las rutas de la cuenta (activa, pausada, borrador) con conversión, volumen y acceso directo al playground.
+- **Conexiones**: los conectores por país (Registro Civil, RENIEC, INE, listas AML, WhatsApp Business API…) con buscador y botón "Conectar" funcional.
+- **Riesgo**: reglas tipo "Bloquear si / Permitir si / Revisar si" con sus condiciones y toggles para activarlas.
+- **Reportes**: los KPIs con sus tendencias, la gráfica mensual y la tabla de últimas validaciones con resultado y duración.
+- **Configuración**: nombre de la ruta, país por defecto, webhook de resultados y notificaciones, con guardado simulado.
 
 ## Cómo correrlo
 
@@ -104,6 +127,11 @@ Para conectar una fuente real solo hay que reemplazar la constante por un fetch 
 | `data/coverage.ts` | El panel de cobertura por país | `GET /v1/metrics/identity-routing/by-country` |
 | `data/sources.ts` | La tabla de fuentes de verificación | `GET /v1/sources?region=latam` |
 | `data/map-data.ts` | El mapa de puntos (silueta y marcadores) | Estático; solo cambiar marcadores si el foco deja de ser Chile |
+| `data/simulation.ts` | Países, documentos y fuentes del playground | `GET /v1/flows/:id/simulate` (sandbox) |
+| `data/routes-list.ts` | La página Rutas | `GET /v1/routing/flows` |
+| `data/connections.ts` | La página Conexiones | `GET /v1/sources` + estado de la cuenta |
+| `data/risk-rules.ts` | La página Riesgo | `GET /v1/risk/rules` |
+| `data/recent-validations.ts` | Tabla de últimas validaciones (Reportes) | `GET /v1/validations?limit=10` |
 
 Sugerencia de implementación: convertir las secciones que lo necesiten a `async` Server Components y hacer el fetch del lado del servidor, o exponer route handlers en `src/app/api/*` que lean de los servicios internos. Mientras el API no exista, el demo funciona 100% estático.
 

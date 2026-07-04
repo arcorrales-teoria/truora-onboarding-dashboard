@@ -186,3 +186,43 @@
     opacity: 0;
   }
 }
+
+/* Entrada suave del logo y la navegación */
+@keyframes brand-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.brand-in {
+  animation: brand-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.brand-in-delayed {
+  animation: brand-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+/* Pulso del nodo activo durante la simulación */
+@keyframes sim-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(79 70 229 / 0.28);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgb(79 70 229 / 0);
+  }
+}
+.sim-active {
+  animation: sim-pulse 1.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-in,
+  .brand-in-delayed,
+  .sim-active {
+    animation: none;
+  }
+}

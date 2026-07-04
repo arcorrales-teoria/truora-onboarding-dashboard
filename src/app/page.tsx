@@ -1,15 +1,72 @@
-import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { TextureOverlay } from "@/components/ui/texture-overlay";
+import { ConversionChart } from "@/components/dashboard/conversion-chart";
+import { CoveragePanel } from "@/components/dashboard/coverage-panel";
+import { KpiBand } from "@/components/dashboard/kpi-band";
+import { LatamMap } from "@/components/dashboard/latam-map";
+import { ProductBlocks } from "@/components/dashboard/product-blocks";
+import { RoutingCanvas } from "@/components/dashboard/routing-canvas";
+import { Section } from "@/components/dashboard/section";
+import { SourcesTable } from "@/components/dashboard/sources-table";
 
-export default function Home() {
+export default function ResumenPage() {
   return (
-    <main className="relative flex-1 px-4 py-8 md:px-10 md:py-12">
-      {/* Fondo con grano sutil, estilo Yuno */}
-      <TextureOverlay texture="noise" opacity={0.16} className="fixed inset-0" />
+    <div className="space-y-10 px-6 py-8 md:px-8">
+      <Section
+        title="Resumen del flujo"
+        description="Rendimiento de la validación de identidad iniciada por WhatsApp durante los últimos seis meses."
+      >
+        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+          <KpiBand />
+          <ConversionChart />
+        </div>
+      </Section>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1440px]">
-        <DashboardShell />
-      </div>
-    </main>
+      <Section
+        title="Recorrido de la validación"
+        description="De WhatsApp a la decisión final: cada tarjeta es un bloque de Truora y las insignias muestran el porcentaje de tráfico por ruta. Ábrelo en el playground para verlo en acción."
+      >
+        <RoutingCanvas />
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-neutral-500">
+          <span className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden />
+            Aprobada
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-amber-500" aria-hidden />
+            Requiere revisión
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-red-500" aria-hidden />
+            Rechazada
+          </span>
+          <span className="ml-auto font-mono text-[11px] text-neutral-400">
+            Datos de demostración
+          </span>
+        </div>
+      </Section>
+
+      <Section
+        title="Bloques de validación"
+        description="Los productos de Truora que componen este flujo. Actívalos o desactívalos sin escribir código."
+      >
+        <ProductBlocks />
+      </Section>
+
+      <Section
+        title="Cobertura"
+        description="Dónde opera el flujo hoy y contra qué volumen de validaciones por país."
+      >
+        <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <LatamMap />
+          <CoveragePanel />
+        </div>
+      </Section>
+
+      <Section
+        title="Fuentes de verificación"
+        description="Los registros oficiales y listas que respaldan cada resultado."
+      >
+        <SourcesTable />
+      </Section>
+    </div>
   );
 }

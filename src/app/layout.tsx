@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import { AppShell } from "@/components/dashboard/app-shell";
+import { TextureOverlay } from "@/components/ui/texture-overlay";
+
 const geistSans = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -15,7 +18,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Truora · Ruteo de validación por WhatsApp",
   description:
-    "Dashboard demo del ruteo de una validación de identidad iniciada por WhatsApp: bloques de validación, cobertura LATAM y fuentes de verificación.",
+    "Dashboard demo del ruteo de una validación de identidad iniciada por WhatsApp: bloques de validación, playground de simulación, cobertura LATAM y fuentes de verificación.",
+  icons: { icon: "/truora-icon.svg" },
 };
 
 export default function RootLayout({
@@ -30,7 +34,17 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+        <main className="relative flex-1 px-4 py-8 md:px-10 md:py-12">
+          {/* Fondo con grano sutil, estilo Yuno */}
+          <TextureOverlay
+            texture="noise"
+            opacity={0.16}
+            className="fixed inset-0"
+          />
+          <div className="relative z-10 mx-auto w-full max-w-[1440px]">
+            <AppShell>{children}</AppShell>
+          </div>
+        </main>
       </body>
     </html>
   );

@@ -50,7 +50,23 @@ function cubicMidpoint(
 /** Escala mínima antes de permitir scroll horizontal (legibilidad). */
 const MIN_SCALE = 0.55;
 
-export function RoutingCanvas() {
+export interface RoutingCanvasProps {
+  /** Nodo que está procesando la simulación (pulsa en índigo). */
+  activeNodeId?: string | null;
+  /** Nodos ya recorridos por la simulación. */
+  visitedNodeIds?: string[];
+  /** Conexiones ya recorridas, como llaves "from-to". */
+  traversedEdges?: string[];
+  /** true mientras corre una simulación: atenúa lo no recorrido. */
+  simulating?: boolean;
+}
+
+export function RoutingCanvas({
+  activeNodeId = null,
+  visitedNodeIds = [],
+  traversedEdges = [],
+  simulating = false,
+}: RoutingCanvasProps) {
   const nodeRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
   const containerRef = React.useRef<HTMLDivElement>(null);
   const outerRef = React.useRef<HTMLDivElement>(null);
@@ -131,29 +147,40 @@ export function RoutingCanvas() {
           height={CANVAS_HEIGHT}
           aria-hidden
         >
-          {edges.map((edge) => (
-            <g key={edge.key}>
-              <path
-                d={edge.path}
-                fill="none"
-                stroke={edge.parallel ? "#C7CBF4" : "#B5BAF2"}
-                strokeWidth="1.5"
-                strokeDasharray={edge.parallel ? "3 6" : undefined}
-              />
-              {!edge.parallel && (
+          {edges.map((edge) => {
+            const traversed = traversedEdges.includes(edge.key);
+            return (
+              <g key={edge.key} opacity={simulating && !traversed ? 0.35 : 1}>
                 <path
                   d={edge.path}
                   fill="none"
-                  stroke="#4F46E5"
-                  strokeWidth="1.5"
-                  strokeDasharray="5 16"
-                  strokeLinecap="round"
-                  className="route-flow"
-                  opacity="0.8"
+                  stroke={
+                    traversed
+                      ? "#4F46E5"
+                      : edge.parallel
+                        ? "#C7CBF4"
+                        : "#B5BAF2"
+                  }
+                  strokeWidth={traversed ? 2 : 1.5}
+                  strokeDasharray={
+                    edge.parallel && !traversed ? "3 6" : undefined
+                  }
                 />
-              )}
-            </g>
-          ))}
+                {(traversed || (!edge.parallel && !simulating)) && (
+                  <path
+                    d={edge.path}
+                    fill="none"
+                    stroke={traversed ? "#818CF8" : "#4F46E5"}
+                    strokeWidth="1.5"
+                    strokeDasharray="5 16"
+                    strokeLinecap="round"
+                    className="route-flow"
+                    opacity="0.9"
+                  />
+                )}
+              </g>
+            );
+          })}
         </svg>
 
         {/* Insignias de porcentaje sobre las rutas */}
@@ -171,30 +198,50 @@ export function RoutingCanvas() {
             </div>
           ))}
 
-        {flowNodes.map((node) => (
-          <FlowNodeCard
-            key={node.id}
-            node={node}
-            ref={(el) => {
-              nodeRefs.current[node.id] = el;
-            }}
-          />
-        ))}
+        {flowNodes.map((node) => {
+          const state = simulating
+            ? node.id === activeNodeId
+              ? "active"
+              : visitedNodeIds.includes(node.id)
+                ? "visited"
+                : "dim"
+            : "idle";
+          return (
+            <FlowNodeCard
+              key={node.id}
+              node={node}
+              state={state}
+              ref={(el) => {
+                nodeRefs.current[node.id] = el;
+              }}
+            />
+          );
+        })}
       </div>
       </div>
     </div>
   );
 }
 
-const FlowNodeCard = React.forwardRef<HTMLDivElement, { node: FlowNode }>(
-  function FlowNodeCard({ node }, ref) {
+type NodeState = "idle" | "dim" | "visited" | "active";
+
+const FlowNodeCard = React.forwardRef<
+  HTMLDivElement,
+  { node: FlowNode; state?: NodeState }
+>(function FlowNodeCard({ node, state = "idle" }, ref) {
     const Icon = flowIcons[node.icon];
     const isWhatsApp = node.icon === "whatsapp";
 
     return (
       <div
         ref={ref}
-        className="absolute w-[280px]"
+        className={cn(
+          "absolute w-[280px] rounded-[24px] transition-all duration-300",
+          state === "dim" && "opacity-45",
+          state === "active" && "sim-active z-10",
+          state === "visited" &&
+            "shadow-[0_0_0_1.5px_rgb(129_140_248_/_0.9)]",
+        )}
         style={{ left: node.x, top: node.y }}
       >
         <TextureCardStyled>
