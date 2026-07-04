@@ -14,7 +14,7 @@ La idea es usarlo en demos comerciales: se abre en el navegador, se recorre de a
 
 Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con el logo de Truora y una barra lateral de navegación funcional a la izquierda: **Resumen, Rutas, Playground, En vivo, Conexiones, Riesgo, Reportes y Configuración** son páginas reales. La barra se puede colapsar a un rail de íconos, en móvil hay menú hamburguesa, y todas las páginas cierran con el mismo llamado a la acción: "Impleméntalo con tu producto → Agendar una asesoría".
 
-La página de Resumen tiene cinco secciones:
+La página de Resumen abre con **una secuencia real del producto en movimiento** (frames extraídos del video del Motor de Cobro que se reproducen en loop, con los pasos del proceso encendiéndose en sincronía: cobro programado → reintento inteligente → pago exitoso) y luego tiene seis secciones:
 
 ### 1. Resumen del flujo
 Cuatro indicadores grandes, cada uno con su mini gráfica de tendencia al lado, y una gráfica principal:
@@ -146,6 +146,37 @@ Detalle útil para el demo en vivo: los toggles de productos y el modo de prueba
 - **Cambiar el país foco**: en `data/coverage.ts` mover el flag `focus`, y en `data/map-data.ts` ajustar los marcadores (cada marcador tiene coordenadas de celda y un `side` para que la etiqueta no se encime con otra).
 - **Cambiar el nombre del flujo**: está en `components/dashboard/flow-toolbar.tsx` (el título "WhatsApp Onboarding · LATAM") y en el nodo de inicio de `data/flow.ts`.
 - **Cambiar rutas o porcentajes del canvas**: todo en `data/flow.ts`; las posiciones son coordenadas absolutas dentro del lienzo y las conexiones se declaran como pares `from → to`.
+
+## Cambios que quedan por hacer
+
+Ordenados por valor. Ninguno bloquea el demo actual; todo lo listado arriba funciona hoy.
+
+**Producto / demo**
+- [ ] **Deep links del playground** (`/playground?pais=CO&resultado=rechazado`): preparar el demo antes de la llamada y abrirlo ya configurado.
+- [ ] **Playground por ruta**: hoy las rutas activas abren el mismo playground genérico; pasar el caso de uso (colocación de crédito vs. onboarding) y ajustar el guion del chat.
+- [ ] **Modo presentación**: botón que oculte el marco del navegador simulado y ponga el contenido a pantalla completa para proyectar.
+- [ ] **Feed de actividad en vivo en el Resumen**: validaciones mock entrando cada pocos segundos para sensación de producto vivo.
+- [ ] **Typing indicator real en el chat** (tres puntos animados antes de cada mensaje del bot).
+- [ ] **Export del resultado de la simulación** (copiar resumen / one-pager imprimible para dejarle al prospecto).
+- [ ] **Control de velocidad de la simulación** (1x / 2x / saltar al final).
+- [ ] **Versión PT-BR** cuando se active Brasil.
+- [ ] **Video del flujo de identidad por WhatsApp**: cuando exista, repetir la extracción de frames (ver abajo) y reemplazar la secuencia del Motor de Cobro en la apertura.
+
+**Ingeniería**
+- [ ] **Conectar los data sources reales** (tabla de arriba): es el pendiente principal; la capa `src/data/` ya está tipada y aislada para eso.
+- [ ] **Página "En vivo"**: hoy es una animación con "Próximamente"; el plan es un websocket/polling que dibuje las validaciones reales en el canvas.
+- [ ] **Tests**: no hay ninguno. Mínimo un smoke e2e con Playwright (cargar cada página + correr una simulación completa).
+- [ ] **Tokens de theming**: los componentes usan clases `indigo-*`/`neutral-*` directas; mover el acento y los hex de los SVG (#4F46E5) a los tokens de `globals.css` para poder cambiar la marca en un solo lugar.
+- [ ] **CTA "Agendar una asesoría"**: hoy apunta a truora.com; cambiar a la URL real de agendamiento (Calendly/HubSpot) cuando exista.
+- [ ] **Analytics**: instrumentar los clics clave (Iniciar simulación, Agendar asesoría, Conectar) para medir los demos.
+
+**Cómo se extrajeron los frames del video** (para repetirlo con otro video):
+
+```bash
+ffmpeg -y -i "video.mp4" -vf "fps=4,scale=564:-2" -q:v 4 /tmp/frame-%02d.jpg
+# el ffmpeg de Homebrew no trae libwebp; convertir con Pillow:
+python3 -c "from PIL import Image; import glob; [Image.open(f).convert('RGB').save(f'public/proceso/frame-{i:02d}.webp','WEBP',quality=82) for i,f in enumerate(sorted(glob.glob('/tmp/frame-*.jpg')),1)]"
+```
 
 ## Deploy
 
