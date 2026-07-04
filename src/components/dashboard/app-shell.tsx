@@ -58,7 +58,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/configuracion": "Configuración",
 };
 
-const EXPERT_URL = "https://www.truora.com";
+const EXPERT_URL = "https://www.truora.com/es/contacto-ventas";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
