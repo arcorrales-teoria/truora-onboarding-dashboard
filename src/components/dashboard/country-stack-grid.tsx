@@ -38,7 +38,7 @@ export function CountryStackGrid() {
                   <p
                     className={cn(
                       "flex items-center gap-1.5 text-[12px]",
-                      active ? "text-emerald-700" : "text-neutral-400",
+                      active ? "text-emerald-700" : "text-neutral-500",
                     )}
                   >
                     <span
@@ -63,7 +63,7 @@ export function CountryStackGrid() {
                     aria-hidden
                   />
                   <div>
-                    <dt className="text-[11.5px] text-neutral-400">
+                    <dt className="text-[11.5px] text-neutral-500">
                       Registro de identidad
                     </dt>
                     <dd className="text-[13px] font-medium text-neutral-800">
@@ -78,7 +78,7 @@ export function CountryStackGrid() {
                     aria-hidden
                   />
                   <div>
-                    <dt className="text-[11.5px] text-neutral-400">Documento</dt>
+                    <dt className="text-[11.5px] text-neutral-500">Documento</dt>
                     <dd className="text-[13px] font-medium text-neutral-800">
                       {stack.document}
                     </dd>
@@ -91,7 +91,7 @@ export function CountryStackGrid() {
                     aria-hidden
                   />
                   <div>
-                    <dt className="text-[11.5px] text-neutral-400">
+                    <dt className="text-[11.5px] text-neutral-500">
                       Antecedentes y riesgo
                     </dt>
                     <dd className="text-[13px] font-medium text-neutral-800">
@@ -106,7 +106,7 @@ export function CountryStackGrid() {
                     aria-hidden
                   />
                   <div>
-                    <dt className="text-[11.5px] text-neutral-400">
+                    <dt className="text-[11.5px] text-neutral-500">
                       Verificación de teléfono
                     </dt>
                     <dd className="text-[13px] font-medium text-neutral-800">

@@ -259,7 +259,7 @@ const FlowNodeCard = React.forwardRef<
               </div>
               <div className="min-w-0">
                 {node.kicker && (
-                  <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-neutral-400">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-neutral-500">
                     {node.kicker}
                   </p>
                 )}
@@ -284,7 +284,7 @@ const FlowNodeCard = React.forwardRef<
                       key={field.label}
                       className="flex items-baseline justify-between gap-3"
                     >
-                      <dt className="text-[12px] text-neutral-400">
+                      <dt className="text-[12px] text-neutral-500">
                         {field.label}
                       </dt>
                       <dd className="truncate font-mono text-[12px] text-neutral-800">

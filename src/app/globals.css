@@ -226,3 +226,39 @@
     animation: none;
   }
 }
+
+/* Focus visible consistente en toda la app */
+@layer base {
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  [role="switch"]:focus-visible {
+    outline: 2px solid oklch(0.585 0.2 277);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+
+/* Página En vivo: pop del sello de aprobado */
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.stamp-in {
+  animation: stamp-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-in {
+    animation: none;
+  }
+}

@@ -52,7 +52,7 @@ export default function ReportesPage() {
                         <th
                           key={heading}
                           scope="col"
-                          className="px-5 py-3 font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-neutral-400"
+                          className="px-5 py-3 font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-neutral-500"
                         >
                           {heading}
                         </th>
@@ -103,7 +103,7 @@ export default function ReportesPage() {
               </table>
             </div>
             <TextureSeparator />
-            <p className="p-4 text-center text-[12px] text-neutral-400">
+            <p className="p-4 text-center text-[12px] text-neutral-500">
               Datos de demostración · La versión conectada listará las
               validaciones reales de la cuenta.
             </p>

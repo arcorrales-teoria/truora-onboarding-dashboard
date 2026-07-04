@@ -96,7 +96,7 @@ const TextureCardDescription = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      "text-sm text-neutral-600 dark:text-neutral-400 pl-2",
+      "text-sm text-neutral-600 dark:text-neutral-500 pl-2",
       className
     )}
     {...props}

@@ -65,7 +65,7 @@ export function SettingsForm() {
                   type="button"
                   onClick={() => setDefaultCountry(code)}
                   className={cn(
-                    "rounded-lg border px-3 py-1.5 font-mono text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
+                    "rounded-lg border px-3.5 py-2 font-mono text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
                     defaultCountry === code
                       ? "border-indigo-600 bg-indigo-600 text-white"
                       : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300",

@@ -24,7 +24,7 @@ export function ConnectionsGrid() {
     <div className="space-y-4">
       <label className="relative block max-w-xs">
         <Search
-          className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400"
+          className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-500"
           aria-hidden
         />
         <input
@@ -73,7 +73,7 @@ export function ConnectionsGrid() {
                     <span
                       className={cn(
                         "flex items-center gap-1.5 text-[12px]",
-                        isConnected ? "text-emerald-700" : "text-neutral-400",
+                        isConnected ? "text-emerald-700" : "text-neutral-500",
                       )}
                     >
                       {isConnected && (

@@ -17,7 +17,7 @@ export function CoveragePanel() {
                 index > 0 && "border-l border-neutral-200/80",
               )}
             >
-              <p className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-neutral-400">
+              <p className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-neutral-500">
                 {stat.label}
               </p>
               <p className="text-[26px] font-semibold leading-none tracking-tight text-neutral-900 tabular-nums">

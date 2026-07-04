@@ -4,7 +4,7 @@ import {
   IdCard,
   MapPin,
   MessageCircle,
-  PenLine,
+  Signature,
   ScanFace,
   ShieldCheck,
   Signal,
@@ -25,7 +25,7 @@ export const flowIcons: Record<FlowNode["icon"], LucideIcon> = {
   document: IdCard,
   signals: Signal,
   shield: ShieldCheck,
-  signature: PenLine,
+  signature: Signature,
   flag: Flag,
 };
 
@@ -35,6 +35,6 @@ export const productIcons: Record<ValidationProduct["icon"], LucideIcon> = {
   phone: Smartphone,
   email: AtSign,
   shield: ShieldCheck,
-  signature: PenLine,
+  signature: Signature,
   pin: MapPin,
 };

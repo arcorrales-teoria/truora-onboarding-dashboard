@@ -1,7 +1,7 @@
 import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { CoveragePanel } from "@/components/dashboard/coverage-panel";
 import { KpiBand } from "@/components/dashboard/kpi-band";
-import { LatamMap } from "@/components/dashboard/latam-map";
+import { LatamConnectionsMap } from "@/components/dashboard/latam-connections-map";
 import { ProductBlocks } from "@/components/dashboard/product-blocks";
 import { RoutingCanvas } from "@/components/dashboard/routing-canvas";
 import { Section } from "@/components/dashboard/section";
@@ -38,7 +38,7 @@ export default function ResumenPage() {
             <span className="size-1.5 rounded-full bg-red-500" aria-hidden />
             Rechazada
           </span>
-          <span className="ml-auto font-mono text-[11px] text-neutral-400">
+          <span className="ml-auto font-mono text-[11px] text-neutral-500">
             Datos de demostración
           </span>
         </div>
@@ -56,7 +56,7 @@ export default function ResumenPage() {
         description="Dónde opera el flujo hoy y contra qué volumen de validaciones por país."
       >
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <LatamMap />
+          <LatamConnectionsMap />
           <CoveragePanel />
         </div>
       </Section>

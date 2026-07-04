@@ -48,7 +48,7 @@ export function ProductBlocks() {
                     "flex size-9 shrink-0 items-center justify-center rounded-[10px] transition-colors",
                     isOn
                       ? "bg-indigo-50 text-indigo-600"
-                      : "bg-neutral-100 text-neutral-400",
+                      : "bg-neutral-100 text-neutral-500",
                   )}
                 >
                   <Icon className="size-4.5" strokeWidth={1.75} aria-hidden />

@@ -358,7 +358,7 @@ export function Playground() {
                   disabled={running}
                   onClick={() => setCountry(code)}
                   className={cn(
-                    "rounded-lg border px-3 py-1.5 font-mono text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
+                    "rounded-lg border px-3.5 py-2 font-mono text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
                     country === code
                       ? "border-indigo-600 bg-indigo-600 text-white"
                       : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:text-neutral-900",
@@ -392,7 +392,7 @@ export function Playground() {
                   disabled={running}
                   onClick={() => setForcedOutcome(option.id)}
                   className={cn(
-                    "rounded-lg border px-3 py-1.5 text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
+                    "rounded-lg border px-3.5 py-2 text-[12px] transition-colors focus-visible:outline-2 focus-visible:outline-indigo-500",
                     forcedOutcome === option.id
                       ? "border-indigo-600 bg-indigo-50 font-medium text-indigo-700"
                       : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:text-neutral-900",
@@ -443,7 +443,7 @@ export function Playground() {
                 { label: "Verificación de teléfono", value: stack.phoneCheck },
               ].map((item) => (
                 <div key={item.label}>
-                  <dt className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-neutral-400">
+                  <dt className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-neutral-500">
                     {item.label}
                   </dt>
                   <dd className="mt-1 text-[13px] font-medium text-neutral-800">
@@ -523,7 +523,7 @@ export function Playground() {
             <TextureSeparator />
             <div className="max-h-64 overflow-y-auto p-2">
               {log.length === 0 ? (
-                <p className="px-2 py-6 text-center text-[12.5px] text-neutral-400">
+                <p className="px-2 py-6 text-center text-[12.5px] text-neutral-500">
                   Los eventos de la validación aparecerán aquí en tiempo real.
                 </p>
               ) : (
@@ -533,7 +533,7 @@ export function Playground() {
                       key={entry.id}
                       className="flex items-baseline gap-3 rounded-lg px-2 py-1.5 hover:bg-neutral-50"
                     >
-                      <span className="w-12 shrink-0 font-mono text-[11px] tabular-nums text-neutral-400">
+                      <span className="w-12 shrink-0 font-mono text-[11px] tabular-nums text-neutral-500">
                         {entry.time}
                       </span>
                       <span

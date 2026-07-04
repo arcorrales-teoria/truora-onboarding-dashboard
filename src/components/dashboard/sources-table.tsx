@@ -18,7 +18,7 @@ export function SourcesTable() {
           </div>
           <label className="relative block">
             <Search
-              className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-400"
+              className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-neutral-500"
               aria-hidden
             />
             <input
@@ -40,7 +40,7 @@ export function SourcesTable() {
                     <th
                       key={heading}
                       scope="col"
-                      className="px-5 py-3 font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-neutral-400"
+                      className="px-5 py-3 font-mono text-[10.5px] font-medium uppercase tracking-[0.08em] text-neutral-500"
                     >
                       {heading}
                     </th>

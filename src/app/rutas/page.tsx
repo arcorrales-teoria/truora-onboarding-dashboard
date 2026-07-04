@@ -69,7 +69,7 @@ export default function RutasPage() {
 
                   <dl className="grid flex-1 grid-cols-2 gap-y-3 p-5 text-[13px]">
                     <div>
-                      <dt className="text-[11.5px] text-neutral-400">
+                      <dt className="text-[11.5px] text-neutral-500">
                         Conversión
                       </dt>
                       <dd className="font-mono tabular-nums text-neutral-800">
@@ -77,7 +77,7 @@ export default function RutasPage() {
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-[11.5px] text-neutral-400">
+                      <dt className="text-[11.5px] text-neutral-500">
                         Validaciones / mes
                       </dt>
                       <dd className="font-mono tabular-nums text-neutral-800">
@@ -85,7 +85,7 @@ export default function RutasPage() {
                       </dd>
                     </div>
                     <div className="col-span-2">
-                      <dt className="text-[11.5px] text-neutral-400">Países</dt>
+                      <dt className="text-[11.5px] text-neutral-500">Países</dt>
                       <dd className="mt-1 flex flex-wrap gap-1.5">
                         {route.countries.map((code) => (
                           <span

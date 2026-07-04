@@ -12,7 +12,7 @@ La idea es usarlo en demos comerciales: se abre en el navegador, se recorre de a
 
 ## ¿Qué se ve en la pantalla?
 
-Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con el logo de Truora y una barra lateral de navegación funcional a la izquierda: **Resumen, Rutas, Playground, Conexiones, Riesgo, Reportes y Configuración** son páginas reales.
+Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los screenshots de producto de Yuno o Stripe), con el logo de Truora y una barra lateral de navegación funcional a la izquierda: **Resumen, Rutas, Playground, En vivo, Conexiones, Riesgo, Reportes y Configuración** son páginas reales. La barra se puede colapsar a un rail de íconos, en móvil hay menú hamburguesa, y todas las páginas cierran con el mismo llamado a la acción: "Impleméntalo con tu producto → Agendar una asesoría".
 
 La página de Resumen tiene cinco secciones:
 
@@ -73,11 +73,12 @@ Al terminar aparece la tarjeta de resultado (aprobado / revisión / rechazado) c
 
 ## Las demás páginas
 
-- **Rutas**: las rutas de la cuenta (activa, pausada, borrador) con conversión, volumen y acceso directo al playground.
+- **Rutas**: seis rutas con su caso de uso (apertura de cuenta, colocación de producto, contratación remota, recuperación de acceso, cumplimiento AML), estado, conversión y acceso directo al playground.
+- **En vivo** (Próximamente): la futura herramienta para conectar tu proceso real. Muestra en loop la animación del ruteo: la validación entra, el motor consulta el registro de identidad, las listas de riesgo y el operador móvil, sale el sello de "Aprobado" y el proceso continúa a la firma.
 - **Conexiones**: los conectores por país (Registro Civil, RENIEC, INE, listas AML, WhatsApp Business API…) con buscador y botón "Conectar" funcional.
 - **Riesgo**: reglas tipo "Bloquear si / Permitir si / Revisar si" con sus condiciones y toggles para activarlas.
 - **Reportes**: los KPIs con sus tendencias, la gráfica mensual y la tabla de últimas validaciones con resultado y duración.
-- **Configuración**: nombre de la ruta, país por defecto, webhook de resultados y notificaciones, con guardado simulado.
+- **Configuración**: la configuración por país (Registro Civil → CL, Registraduría → CO, RENIEC → PE, INE → MX, y SERPRO/RENAPER disponibles) más el formulario del flujo con guardado simulado.
 
 ## Cómo correrlo
 
@@ -126,7 +127,7 @@ Para conectar una fuente real solo hay que reemplazar la constante por un fetch 
 | `data/products.ts` | Los toggles de bloques de validación | `GET /v1/flows/:id/steps` |
 | `data/coverage.ts` | El panel de cobertura por país | `GET /v1/metrics/identity-routing/by-country` |
 | `data/sources.ts` | La tabla de fuentes de verificación | `GET /v1/sources?region=latam` |
-| `data/map-data.ts` | El mapa de puntos (silueta y marcadores) | Estático; solo cambiar marcadores si el foco deja de ser Chile |
+| `data/country-stack.ts` | Configuración por país (playground y Configuración) | `GET /v1/config/countries` |
 | `data/simulation.ts` | Países, documentos y fuentes del playground | `GET /v1/flows/:id/simulate` (sandbox) |
 | `data/routes-list.ts` | La página Rutas | `GET /v1/routing/flows` |
 | `data/connections.ts` | La página Conexiones | `GET /v1/sources` + estado de la cuenta |
