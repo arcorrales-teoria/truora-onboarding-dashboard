@@ -11,6 +11,9 @@ const TextureCardStyled = React.forwardRef<
     className={cn(
       "rounded-[24px] border border-white/60 dark:border-stone-950/60",
       "bg-gradient-to-b dark:from-neutral-800 dark:to-neutral-900 from-neutral-100 to-white/70",
+      // Profundidad: sombra de contacto + ambiente fría, y luz en el borde superior
+      "shadow-[0px_1px_1px_rgba(20,21,38,0.05),0px_3px_6px_-2px_rgba(38,36,110,0.06),0px_14px_28px_-12px_rgba(38,36,110,0.14),inset_0px_1px_0px_rgba(255,255,255,0.9)]",
+      "transition-shadow duration-300",
       className
     )}
     {...props}
@@ -20,7 +23,7 @@ const TextureCardStyled = React.forwardRef<
       <div className="rounded-[22px] border  dark:border-neutral-950 border-white/50">
         <div className="rounded-[21px] border  dark:border-neutral-900/70  border-neutral-950/20">
           {/* Inner content wrapper */}
-          <div className=" w-full border border-white/50 dark:border-neutral-700/50 rounded-[20px] text-neutral-500 ">
+          <div className=" w-full border border-white/50 dark:border-neutral-700/50 rounded-[20px] text-neutral-500 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.75),inset_0px_-1px_2px_rgba(20,21,38,0.04)] ">
             {children}
           </div>
         </div>

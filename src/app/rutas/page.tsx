@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Globe, MessageCircle, Braces } from "lucide-react";
 
+import { Reveal } from "@/components/dashboard/reveal";
 import { Section } from "@/components/dashboard/section";
 import {
   TextureCardStyled,
@@ -34,11 +35,12 @@ export default function RutasPage() {
         description="Cada ruta define cómo se valida la identidad según el canal y el país. Abre una en el playground para verla en acción."
       >
         <div className="grid gap-4 lg:grid-cols-3">
-          {routesList.map((route) => {
+          {routesList.map((route, index) => {
             const status = statusStyles[route.status];
             const ChannelIcon = channelIcons[route.channel];
             return (
-              <TextureCardStyled key={route.id}>
+              <Reveal key={route.id} delay={index * 0.06} className="h-full">
+              <TextureCardStyled className="h-full">
                 <div className="flex h-full flex-col rounded-[20px] bg-white">
                   <div className="flex items-start gap-3 p-5">
                     <div className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-indigo-50 text-indigo-600">
@@ -114,6 +116,7 @@ export default function RutasPage() {
                   </Link>
                 </div>
               </TextureCardStyled>
+              </Reveal>
             );
           })}
         </div>

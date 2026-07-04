@@ -21,6 +21,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { motion } from "motion/react";
+
 import { Switch } from "@/components/ui/switch";
 import { TextureButton } from "@/components/ui/texture-button";
 import { BrowserWindow } from "@/components/ui/mock-browser-window";
@@ -291,9 +293,15 @@ function Toolbar({
           Validación de identidad <span aria-hidden>/</span> WhatsApp
           Onboarding · LATAM
         </p>
-        <h1 className="text-[17px] font-semibold tracking-tight text-neutral-900">
+        <motion.h1
+          key={title}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[17px] font-semibold tracking-tight text-neutral-900"
+        >
           {title}
-        </h1>
+        </motion.h1>
       </div>
 
       <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
@@ -359,9 +367,9 @@ function ExpertCta() {
           href={EXPERT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="block w-56 rounded-[12px] border border-black/10 bg-gradient-to-b from-indigo-300/90 to-indigo-500 p-[1px] transition duration-300"
+          className="block w-56 rounded-[12px] border border-black/10 bg-gradient-to-b from-indigo-300/90 to-indigo-500 p-[1px] transition-[transform,box-shadow] duration-200 shadow-[0px_1px_1px_rgba(20,21,38,0.1),0px_6px_14px_-4px_rgba(79,70,229,0.45)] hover:shadow-[0px_1px_1px_rgba(20,21,38,0.1),0px_8px_20px_-4px_rgba(79,70,229,0.55)] active:translate-y-[1px] active:shadow-[0px_1px_3px_rgba(79,70,229,0.35)]"
         >
-          <span className="flex items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-indigo-400 to-indigo-600 px-4 py-2 text-sm text-white/90 transition duration-300 hover:from-indigo-400/80 hover:to-indigo-600/80">
+          <span className="flex items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-indigo-400 to-indigo-600 px-4 py-2 text-sm text-white/90 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.4),inset_0px_-1.5px_1px_rgba(30,27,110,0.35)] transition duration-300 hover:from-indigo-400/80 hover:to-indigo-600/80">
             Agendar una asesoría
             <ArrowUpRight className="size-3.5" aria-hidden />
           </span>

@@ -39,7 +39,10 @@ Un diagrama de flujo estilo "canvas de ruteo" que cuenta la historia completa de
 
 Cada tarjeta muestra sus tasas de éxito/rechazo/error, igual que lo haría el producto real. Las líneas tienen un trazo animado que indica la dirección del flujo.
 
-### 3. Bloques de validación
+### 3. Truora en el centro del ruteo
+Un diagrama de arquitectura (estilo integración de pagos): a la izquierda entran tus canales (WhatsApp, Web, App, API) y tu sistema; en el centro está **Truora como el hub del ruteo** (ruteo inteligente, validación de identidad, motor de riesgo); a la derecha, las fuentes oficiales por país, las listas de riesgo y el webhook que devuelve la decisión a tu sistema. Las líneas fluyen animadas con flechas de dirección.
+
+### 4. Bloques de validación
 Los **7 productos de Truora** que componen el flujo, cada uno como una tarjeta con su interruptor de encendido/apagado (los toggles funcionan, para jugar con ellos en el demo):
 
 - Validación de documento y facial
@@ -52,10 +55,10 @@ Los **7 productos de Truora** que componen el flujo, cada uno como una tarjeta c
 
 El mensaje comercial de esta sección: el flujo se arma y se modifica **sin escribir código**.
 
-### 4. Cobertura
+### 5. Cobertura
 Un mapa de Latinoamérica hecho con matriz de puntos (el estilo de mapa de Yuno), con **Chile resaltado en índigo y un marcador pulsante en Santiago**, porque el demo está ambientado en un onboarding chileno. Al lado, el panel de cobertura: 18 países, 60+ fuentes oficiales, 2.4M de validaciones al mes, y el ranking de principales mercados (Chile, México, Colombia, Perú, Brasil, Argentina) con su volumen.
 
-### 5. Fuentes de verificación
+### 6. Fuentes de verificación
 Una tabla que responde la pregunta que siempre hacen los equipos de riesgo: *"¿contra qué validan?"*. Registro Civil (Chile), RENIEC (Perú), Registraduría (Colombia), INE (México), listas AML/PEP/sanciones y operadores móviles, con la cobertura y capacidades de cada fuente (biometría, OCR, vigencia, monitoreo continuo). Tiene un buscador arriba a la derecha.
 
 ## El playground (la página para ver el producto en acción)

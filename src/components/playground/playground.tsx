@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "motion/react";
 import {
   CheckCircle2,
   Clock3,
@@ -529,8 +530,11 @@ export function Playground() {
               ) : (
                 <ul>
                   {log.map((entry) => (
-                    <li
+                    <motion.li
                       key={entry.id}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="flex items-baseline gap-3 rounded-lg px-2 py-1.5 hover:bg-neutral-50"
                     >
                       <span className="w-12 shrink-0 font-mono text-[11px] tabular-nums text-neutral-500">
@@ -551,7 +555,7 @@ export function Playground() {
                           {entry.detail}
                         </span>
                       </span>
-                    </li>
+                    </motion.li>
                   ))}
                 </ul>
               )}
@@ -601,8 +605,11 @@ function WhatsAppPanel({
             </p>
           )}
           {chat.map((message) => (
-            <div
+            <motion.div
               key={message.id}
+              initial={{ opacity: 0, y: 10, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
                 "flex",
                 message.from === "user" ? "justify-end" : "justify-start",
@@ -632,7 +639,7 @@ function WhatsAppPanel({
                   message.text
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
           <div ref={endRef} />
         </div>

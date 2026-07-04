@@ -6,6 +6,7 @@ import { ProductBlocks } from "@/components/dashboard/product-blocks";
 import { RoutingCanvas } from "@/components/dashboard/routing-canvas";
 import { Section } from "@/components/dashboard/section";
 import { SourcesTable } from "@/components/dashboard/sources-table";
+import { TruoraHubDiagram } from "@/components/dashboard/truora-hub-diagram";
 
 export default function ResumenPage() {
   return (
@@ -42,6 +43,13 @@ export default function ResumenPage() {
             Datos de demostración
           </span>
         </div>
+      </Section>
+
+      <Section
+        title="Truora en el centro del ruteo"
+        description="Tus canales entran por un lado, Truora orquesta la validación consultando las fuentes de cada país, y tu sistema recibe la decisión por webhook."
+      >
+        <TruoraHubDiagram />
       </Section>
 
       <Section

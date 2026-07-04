@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { GripVertical, Info } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 
 import { Switch } from "@/components/ui/switch";
 import { TextureCardStyled } from "@/components/ui/texture-card";
@@ -16,6 +17,7 @@ export function ProductBlocks() {
   );
 
   const activeCount = Object.values(enabled).filter(Boolean).length;
+  const reduced = useReducedMotion();
 
   return (
     <div className="space-y-4">
@@ -28,11 +30,22 @@ export function ProductBlocks() {
       </p>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {validationProducts.map((product) => {
+        {validationProducts.map((product, index) => {
           const Icon = productIcons[product.icon];
           const isOn = enabled[product.id];
           return (
-            <TextureCardStyled key={product.id}>
+            <motion.div
+              key={product.id}
+              initial={reduced ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.05,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+            <TextureCardStyled className="h-full">
               <div
                 className={cn(
                   "flex h-full items-start gap-3 rounded-[20px] bg-white p-4 transition-opacity",
@@ -79,6 +92,7 @@ export function ProductBlocks() {
                 </div>
               </div>
             </TextureCardStyled>
+            </motion.div>
           );
         })}
       </div>
