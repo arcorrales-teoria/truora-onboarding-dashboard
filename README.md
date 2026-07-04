@@ -17,7 +17,7 @@ Todo el dashboard vive dentro de una "ventana de navegador" simulada (como los s
 La página de Resumen abre con **una secuencia real del producto en movimiento** (frames extraídos del video del Motor de Cobro que se reproducen en loop, con los pasos del proceso encendiéndose en sincronía: cobro programado → reintento inteligente → pago exitoso) y luego tiene seis secciones:
 
 ### 1. Resumen del flujo
-Cuatro indicadores grandes, cada uno con su mini gráfica de tendencia al lado, y una gráfica principal:
+Cuatro indicadores grandes, cada uno con su mini gráfica de tendencia al lado. **Son seleccionables**: al hacer clic en cualquiera, la gráfica principal cambia a su serie de seis meses (con dominio y unidad propios, incluso segundos para el tiempo de validación):
 
 - **Conversión total del flujo** (la celda índigo, el número héroe): de cada 100 personas que empiezan la validación en WhatsApp, cuántas la terminan con éxito.
 - **Aprobación documento + facial**: qué tan bien funciona la validación principal.

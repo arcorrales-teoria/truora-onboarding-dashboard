@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { CoveragePanel } from "@/components/dashboard/coverage-panel";
-import { KpiBand } from "@/components/dashboard/kpi-band";
+import { MetricsExplorer } from "@/components/dashboard/metrics-explorer";
 import { Section } from "@/components/dashboard/section";
 import {
   TextureCardStyled,
@@ -31,10 +30,7 @@ export default function ReportesPage() {
         title="Rendimiento"
         description="Los mismos indicadores del resumen, pensados para exportar y revisar con el equipo."
       >
-        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <KpiBand />
-          <ConversionChart />
-        </div>
+        <MetricsExplorer />
       </Section>
 
       <Section

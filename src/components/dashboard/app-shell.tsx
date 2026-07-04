@@ -64,6 +64,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const title = PAGE_TITLES[pathname] ?? "Resumen del flujo";
   const [collapsed, setCollapsed] = React.useState(false);
+  const footerCtaRef = React.useRef<HTMLDivElement>(null);
+  const [footerCtaVisible, setFooterCtaVisible] = React.useState(false);
+
+  // El botón flotante se retira cuando el CTA del pie ya está en pantalla.
+  React.useEffect(() => {
+    const el = footerCtaRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterCtaVisible(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Recuerda el estado del menú entre visitas.
   React.useEffect(() => {
@@ -175,23 +189,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <MobileNav pathname={pathname} title={title} />
           <Toolbar title={title} isPlayground={pathname === "/playground"} />
           <div className="flex-1">{children}</div>
-          <ExpertCta />
+          <div ref={footerCtaRef}>
+            <ExpertCta />
+          </div>
         </div>
       </div>
 
-      <FloatingExpertCta />
+      <FloatingExpertCta hidden={footerCtaVisible} />
     </BrowserWindow>
   );
 }
 
 /** Botón flotante: la asesoría siempre a un clic, sin importar el scroll. */
-function FloatingExpertCta() {
+function FloatingExpertCta({ hidden }: { hidden: boolean }) {
   return (
     <a
       href={EXPERT_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-5 z-50 block rounded-full border border-black/10 bg-gradient-to-b from-indigo-300/90 to-indigo-500 p-[1px] shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_10px_24px_-6px_rgba(79,70,229,0.55)] transition-[transform,box-shadow] duration-200 hover:shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_14px_30px_-6px_rgba(79,70,229,0.65)] active:translate-y-[1px]"
+      aria-hidden={hidden || undefined}
+      tabIndex={hidden ? -1 : undefined}
+      className={cn(
+        hidden && "pointer-events-none translate-y-2 opacity-0",
+        "fixed bottom-5 right-5 z-50 block rounded-full border border-black/10 bg-gradient-to-b from-indigo-300/90 to-indigo-500 p-[1px] shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_10px_24px_-6px_rgba(79,70,229,0.55)] transition-[transform,box-shadow] duration-200 hover:shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_14px_30px_-6px_rgba(79,70,229,0.65)] active:translate-y-[1px]",
+        "transition-[opacity,transform,box-shadow] duration-300",
+      )}
     >
       <span className="flex items-center gap-2 rounded-full bg-gradient-to-b from-indigo-400 to-indigo-600 py-2.5 pl-4 pr-5 text-[13px] font-medium text-white/95 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.4),inset_0px_-1.5px_1px_rgba(30,27,110,0.35)]">
       <Headset className="size-4" strokeWidth={1.75} aria-hidden />

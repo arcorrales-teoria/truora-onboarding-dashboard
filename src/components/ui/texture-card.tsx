@@ -19,11 +19,11 @@ const TextureCardStyled = React.forwardRef<
     {...props}
   >
     {/* Nested structure for aesthetic borders */}
-    <div className="rounded-[23px] border  dark:border-neutral-900/80 border-black/10 ">
-      <div className="rounded-[22px] border  dark:border-neutral-950 border-white/50">
-        <div className="rounded-[21px] border  dark:border-neutral-900/70  border-neutral-950/20">
+    <div className="h-full rounded-[23px] border  dark:border-neutral-900/80 border-black/10 ">
+      <div className="h-full rounded-[22px] border  dark:border-neutral-950 border-white/50">
+        <div className="h-full rounded-[21px] border  dark:border-neutral-900/70  border-neutral-950/20">
           {/* Inner content wrapper */}
-          <div className=" w-full border border-white/50 dark:border-neutral-700/50 rounded-[20px] text-neutral-500 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.75),inset_0px_-1px_2px_rgba(20,21,38,0.04)] ">
+          <div className=" h-full w-full border border-white/50 dark:border-neutral-700/50 rounded-[20px] text-neutral-500 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.75),inset_0px_-1px_2px_rgba(20,21,38,0.04)] ">
             {children}
           </div>
         </div>

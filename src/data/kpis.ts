@@ -14,8 +14,11 @@ export interface Kpi {
   /** Comparación contra el período anterior, ya formateada. */
   delta: string;
   direction: "up" | "down";
-  /** Últimos seis meses, para la mini gráfica de cada celda. */
+  /** Últimos seis meses, para la mini gráfica y la gráfica principal. */
   trend: number[];
+  unit: "%" | "s";
+  /** Subtítulo de la gráfica principal cuando este KPI está seleccionado. */
+  chartHint: string;
   /** La celda destacada en índigo (una sola por banda). */
   highlight?: boolean;
 }
@@ -28,6 +31,8 @@ export const kpis: Kpi[] = [
     delta: "+4.9 pts vs. mayo",
     direction: "up",
     trend: [74.2, 76.8, 75.9, 80.4, 84.5, 89.4],
+    unit: "%",
+    chartHint: "Validaciones completadas sobre iniciadas, por mes.",
     highlight: true,
   },
   {
@@ -37,6 +42,8 @@ export const kpis: Kpi[] = [
     delta: "+1.3 pts",
     direction: "up",
     trend: [90.1, 91.4, 90.8, 91.9, 92.2, 93.2],
+    unit: "%",
+    chartHint: "Documentos y rostros aprobados en el primer intento, por mes.",
   },
   {
     id: "reintentos",
@@ -45,6 +52,8 @@ export const kpis: Kpi[] = [
     delta: "+6.2 pts",
     direction: "up",
     trend: [60.4, 63.1, 62.5, 65.6, 68.2, 71.8],
+    unit: "%",
+    chartHint: "Validaciones recuperadas después de un primer intento fallido.",
   },
   {
     id: "tiempo-mediano",
@@ -53,5 +62,7 @@ export const kpis: Kpi[] = [
     delta: "-9 s vs. mayo",
     direction: "down",
     trend: [63, 60, 61, 56, 52, 47],
+    unit: "s",
+    chartHint: "Segundos que tarda una persona típica en completar el flujo.",
   },
 ];
