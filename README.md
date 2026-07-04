@@ -167,7 +167,7 @@ Ordenados por valor. Ninguno bloquea el demo actual; todo lo listado arriba func
 - [ ] **Página "En vivo"**: hoy es una animación con "Próximamente"; el plan es un websocket/polling que dibuje las validaciones reales en el canvas.
 - [ ] **Tests**: no hay ninguno. Mínimo un smoke e2e con Playwright (cargar cada página + correr una simulación completa).
 - [ ] **Tokens de theming**: los componentes usan clases `indigo-*`/`neutral-*` directas; mover el acento y los hex de los SVG (#4F46E5) a los tokens de `globals.css` para poder cambiar la marca en un solo lugar.
-- [ ] **CTA "Agendar una asesoría"**: hoy apunta a truora.com; cambiar a la URL real de agendamiento (Calendly/HubSpot) cuando exista.
+- [x] **CTA "Agendar una asesoría"**: apunta a https://www.truora.com/es/contacto-ventas (visible al pie y como botón flotante en todas las páginas).
 - [ ] **Analytics**: instrumentar los clics clave (Iniciar simulación, Agendar asesoría, Conectar) para medir los demos.
 
 **Cómo se extrajeron los frames del video** (para repetirlo con otro video):
