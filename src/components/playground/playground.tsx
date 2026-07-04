@@ -16,6 +16,7 @@ import {
   TextureCardStyled,
   TextureSeparator,
 } from "@/components/ui/texture-card";
+import { countryStacks } from "@/data/country-stack";
 import {
   countryConfigs,
   outcomeOptions,
@@ -337,12 +338,14 @@ export function Playground() {
   }
 
   const config = countryConfigs[country];
+  const stack = countryStacks.find((s) => s.code === country);
 
   return (
     <div className="space-y-5 px-6 py-8 md:px-8">
       {/* Controles */}
       <TextureCardStyled>
-        <div className="flex flex-wrap items-end gap-x-8 gap-y-4 rounded-[20px] bg-white p-5">
+        <div className="rounded-[20px] bg-white">
+        <div className="flex flex-wrap items-end gap-x-8 gap-y-4 p-5">
           <fieldset>
             <legend className="mb-2 text-[12px] font-medium text-neutral-500">
               País de la validación
@@ -423,6 +426,34 @@ export function Playground() {
               </TextureButton>
             </div>
           </div>
+        </div>
+
+        {/* El backend que usa el flujo en el país elegido */}
+        {stack && (
+          <>
+            <TextureSeparator />
+            <dl className="grid gap-x-8 gap-y-3 p-5 sm:grid-cols-2 xl:grid-cols-4">
+              {[
+                { label: "Registro de identidad", value: stack.identitySource },
+                { label: "Documento", value: stack.document },
+                {
+                  label: "Antecedentes y riesgo",
+                  value: stack.backgroundSources.join(" · "),
+                },
+                { label: "Verificación de teléfono", value: stack.phoneCheck },
+              ].map((item) => (
+                <div key={item.label}>
+                  <dt className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-neutral-400">
+                    {item.label}
+                  </dt>
+                  <dd className="mt-1 text-[13px] font-medium text-neutral-800">
+                    {item.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        )}
         </div>
       </TextureCardStyled>
 

@@ -29,7 +29,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Resumen", icon: LayoutDashboard },
-  { href: "/rutas", label: "Rutas", icon: Workflow, badge: "3" },
+  { href: "/rutas", label: "Rutas", icon: Workflow, badge: "6" },
   { href: "/playground", label: "Playground", icon: Play },
   { href: "/conexiones", label: "Conexiones", icon: PlugZap },
   { href: "/riesgo", label: "Riesgo", icon: ShieldCheck },

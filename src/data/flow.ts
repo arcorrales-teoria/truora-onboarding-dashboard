@@ -56,7 +56,7 @@ export interface FlowEdge {
 }
 
 export const CANVAS_WIDTH = 1628;
-export const CANVAS_HEIGHT = 780;
+export const CANVAS_HEIGHT = 850;
 
 export const flowNodes: FlowNode[] = [
   {
@@ -90,7 +90,7 @@ export const flowNodes: FlowNode[] = [
     kicker: "Ruteo inteligente",
     title: "Mejor ruta por conversión",
     x: 672,
-    y: 16,
+    y: 8,
     list: [
       { label: "Documento + facial", sublabel: "Ruta principal" },
       { label: "Solo documento", sublabel: "Ruta de respaldo" },
@@ -103,7 +103,7 @@ export const flowNodes: FlowNode[] = [
     kicker: "Validación",
     title: "Documento y facial",
     x: 672,
-    y: 262,
+    y: 286,
     statuses: [
       { label: "Aprobada", tone: "success", value: "93.2%" },
       { label: "Rechazada", tone: "danger", value: "4.1%" },
@@ -116,7 +116,7 @@ export const flowNodes: FlowNode[] = [
     kicker: "Validación",
     title: "Solo documento",
     x: 672,
-    y: 542,
+    y: 586,
     statuses: [
       { label: "Aprobada", tone: "success", value: "88.6%" },
       { label: "Rechazada", tone: "danger", value: "8.9%" },
@@ -142,7 +142,7 @@ export const flowNodes: FlowNode[] = [
     title: "Antecedentes",
     description: "Listas AML, PEP y registros locales.",
     x: 1008,
-    y: 340,
+    y: 356,
     statuses: [
       { label: "Sin hallazgos", tone: "success", value: "96.8%" },
       { label: "Con hallazgos", tone: "warning", value: "3.2%" },
@@ -155,7 +155,7 @@ export const flowNodes: FlowNode[] = [
     title: "Firma electrónica",
     description: "Acepta términos y firma el contrato en el mismo chat.",
     x: 1008,
-    y: 592,
+    y: 648,
     statuses: [{ label: "Firmada", tone: "success", value: "97.4%" }],
   },
   {
@@ -164,7 +164,7 @@ export const flowNodes: FlowNode[] = [
     kicker: "Resultado",
     title: "Decisión final",
     x: 1330,
-    y: 300,
+    y: 330,
     statuses: [
       { label: "Aprobado", tone: "success", value: "91.3%" },
       { label: "Revisión manual", tone: "warning", value: "6.2%" },

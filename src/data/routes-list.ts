@@ -7,6 +7,7 @@
 export interface RouteSummary {
   id: string;
   name: string;
+  useCase: string;
   channel: "WhatsApp" | "Web" | "API";
   countries: string[];
   status: "activa" | "pausada" | "borrador";
@@ -19,6 +20,7 @@ export const routesList: RouteSummary[] = [
   {
     id: "whatsapp-onboarding-latam",
     name: "WhatsApp Onboarding · LATAM",
+    useCase: "Apertura de cuenta",
     channel: "WhatsApp",
     countries: ["CL", "MX", "CO", "PE"],
     status: "activa",
@@ -27,8 +29,31 @@ export const routesList: RouteSummary[] = [
     updatedAt: "Hace 2 días",
   },
   {
+    id: "colocacion-credito-cl",
+    name: "Colocación de crédito · Chile",
+    useCase: "Colocación de producto",
+    channel: "WhatsApp",
+    countries: ["CL"],
+    status: "activa",
+    conversion: "76.2%",
+    monthlyVolume: "184k",
+    updatedAt: "Hace 5 días",
+  },
+  {
+    id: "firma-contratos-co",
+    name: "Firma de contratos · Colombia",
+    useCase: "Contratación remota",
+    channel: "API",
+    countries: ["CO"],
+    status: "activa",
+    conversion: "94.7%",
+    monthlyVolume: "96k",
+    updatedAt: "Hace 1 semana",
+  },
+  {
     id: "web-onboarding-mx",
     name: "Web Onboarding · México",
+    useCase: "Apertura de cuenta",
     channel: "Web",
     countries: ["MX"],
     status: "pausada",
@@ -37,8 +62,20 @@ export const routesList: RouteSummary[] = [
     updatedAt: "Hace 3 semanas",
   },
   {
+    id: "reactivacion-pe",
+    name: "Reactivación de cuentas · Perú",
+    useCase: "Recuperación de acceso",
+    channel: "WhatsApp",
+    countries: ["PE"],
+    status: "borrador",
+    conversion: "Sin datos",
+    monthlyVolume: "Sin datos",
+    updatedAt: "Ayer",
+  },
+  {
     id: "kyc-reforzado-co",
     name: "KYC reforzado · Colombia",
+    useCase: "Cumplimiento AML",
     channel: "API",
     countries: ["CO"],
     status: "borrador",

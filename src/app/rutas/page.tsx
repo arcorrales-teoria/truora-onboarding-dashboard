@@ -59,6 +59,9 @@ export default function RutasPage() {
                         />
                         {status.label} · {route.updatedAt}
                       </p>
+                      <span className="mt-2 inline-block rounded-full bg-indigo-50 px-2.5 py-0.5 text-[11px] font-medium text-indigo-700">
+                        {route.useCase}
+                      </span>
                     </div>
                   </div>
 
