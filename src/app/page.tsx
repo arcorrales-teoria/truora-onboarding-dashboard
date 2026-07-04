@@ -2,7 +2,7 @@ import { ConversionChart } from "@/components/dashboard/conversion-chart";
 import { CoveragePanel } from "@/components/dashboard/coverage-panel";
 import { KpiBand } from "@/components/dashboard/kpi-band";
 import { LatamConnectionsMap } from "@/components/dashboard/latam-connections-map";
-import { ProcessReel } from "@/components/dashboard/process-reel";
+import { ValidationReel } from "@/components/dashboard/validation-reel";
 import { ProductBlocks } from "@/components/dashboard/product-blocks";
 import { RoutingCanvas } from "@/components/dashboard/routing-canvas";
 import { Reveal } from "@/components/dashboard/reveal";
@@ -14,7 +14,7 @@ export default function ResumenPage() {
   return (
     <div className="space-y-10 px-6 py-8 md:px-8">
       <Reveal>
-        <ProcessReel />
+        <ValidationReel />
       </Reveal>
 
       <Section

@@ -20,6 +20,8 @@ import {
 import { TextureCardStyled, TextureSeparator } from "@/components/ui/texture-card";
 import { cn } from "@/lib/utils";
 
+import { useDragOffsets, type Offset } from "./use-drag-offsets";
+
 /**
  * Diagrama "Truora en el centro": los canales del cliente entran por la
  * izquierda, Truora orquesta el ruteo en el medio y a la derecha están
@@ -119,22 +121,25 @@ const hubRows = [
 
 const HUB = { x: HUB_X, y: 140, h: 280 };
 
-function connector(card: SideCard) {
-  const y = card.y + card.h / 2;
-  const hubY = HUB.y + HUB.h / 2;
+function connector(card: SideCard, cardOffset: Offset, hubOffset: Offset) {
+  const cardX = card.x + cardOffset.x;
+  const cardY = card.y + cardOffset.y;
+  const hubX = HUB.x + hubOffset.x;
+  const y = cardY + card.h / 2;
+  const hubY = HUB.y + hubOffset.y + HUB.h / 2;
   if (card.side === "left") {
-    const x1 = card.x + SIDE_W;
-    const x2 = HUB.x;
-    const bend = (x2 - x1) / 2;
+    const x1 = cardX + SIDE_W;
+    const x2 = hubX;
+    const bend = Math.max(36, (x2 - x1) / 2);
     return {
       path: `M ${x1} ${y} C ${x1 + bend} ${y}, ${x2 - bend} ${hubY}, ${x2} ${hubY}`,
       badgeX: x1 + 36,
       badgeY: y + (hubY - y) * 0.12,
     };
   }
-  const x1 = HUB.x + HUB_W;
-  const x2 = card.x;
-  const bend = (x2 - x1) / 2;
+  const x1 = hubX + HUB_W;
+  const x2 = cardX;
+  const bend = Math.max(36, (x2 - x1) / 2);
   return {
     path: `M ${x1} ${hubY} C ${x1 + bend} ${hubY}, ${x2 - bend} ${y}, ${x2} ${y}`,
     badgeX: x2 - 36,
@@ -147,6 +152,8 @@ const MIN_SCALE = 0.6;
 export function TruoraHubDiagram() {
   const outerRef = React.useRef<HTMLDivElement>(null);
   const [scale, setScale] = React.useState(1);
+  const { offsetOf, handlersFor, draggingId } = useDragOffsets(scale);
+  const hubOffset = offsetOf("hub");
 
   React.useLayoutEffect(() => {
     const outer = outerRef.current;
@@ -176,7 +183,7 @@ export function TruoraHubDiagram() {
             aria-hidden
           >
             {sideCards.map((card) => {
-              const { path } = connector(card);
+              const { path } = connector(card, offsetOf(card.id), hubOffset);
               return (
                 <g key={card.id}>
                   <path
@@ -202,7 +209,11 @@ export function TruoraHubDiagram() {
 
           {/* Flechas de dirección sobre las líneas, estilo integración */}
           {sideCards.map((card) => {
-            const { badgeX, badgeY } = connector(card);
+            const { badgeX, badgeY } = connector(
+              card,
+              offsetOf(card.id),
+              hubOffset,
+            );
             const Chevron =
               card.id === "sistema" || card.id === "webhook"
                 ? card.side === "left"
@@ -227,8 +238,17 @@ export function TruoraHubDiagram() {
           {sideCards.map((card) => (
             <div
               key={card.id}
-              className="absolute"
-              style={{ left: card.x, top: card.y, width: SIDE_W }}
+              {...handlersFor(card.id)}
+              className={cn(
+                "absolute cursor-grab touch-none select-none rounded-[24px]",
+                draggingId === card.id &&
+                  "z-20 cursor-grabbing shadow-[0px_18px_36px_-12px_rgba(38,36,110,0.35)]",
+              )}
+              style={{
+                left: card.x + offsetOf(card.id).x,
+                top: card.y + offsetOf(card.id).y,
+                width: SIDE_W,
+              }}
             >
               <TextureCardStyled>
                 <div className="rounded-[20px] bg-white p-4">
@@ -267,8 +287,16 @@ export function TruoraHubDiagram() {
 
           {/* Hub central: Truora */}
           <div
-            className="absolute"
-            style={{ left: HUB.x, top: HUB.y, width: HUB_W }}
+            {...handlersFor("hub")}
+            className={cn(
+              "absolute cursor-grab touch-none select-none rounded-[24px]",
+              draggingId === "hub" && "z-20 cursor-grabbing",
+            )}
+            style={{
+              left: HUB.x + hubOffset.x,
+              top: HUB.y + hubOffset.y,
+              width: HUB_W,
+            }}
           >
             <TextureCardStyled className="shadow-[0px_1px_1px_rgba(20,21,38,0.06),0px_6px_14px_-4px_rgba(79,70,229,0.25),0px_20px_40px_-16px_rgba(79,70,229,0.28),inset_0px_1px_0px_rgba(255,255,255,0.9)]">
               <div className="rounded-[20px] bg-white">

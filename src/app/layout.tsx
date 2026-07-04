@@ -34,14 +34,14 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <main className="relative flex-1 px-4 py-8 md:px-10 md:py-12">
+        <main className="relative flex-1 p-2.5 sm:p-4 lg:p-6">
           {/* Fondo con grano sutil, estilo Yuno */}
           <TextureOverlay
             texture="noise"
             opacity={0.16}
             className="fixed inset-0"
           />
-          <div className="relative z-10 mx-auto w-full max-w-[1440px]">
+          <div className="relative z-10 mx-auto w-full max-w-[1880px]">
             <AppShell>{children}</AppShell>
           </div>
         </main>

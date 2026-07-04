@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 
 import { flowIcons } from "./icons";
+import { useDragOffsets } from "./use-drag-offsets";
 
 interface EdgeGeometry {
   key: string;
@@ -72,6 +73,7 @@ export function RoutingCanvas({
   const outerRef = React.useRef<HTMLDivElement>(null);
   const [edges, setEdges] = React.useState<EdgeGeometry[]>([]);
   const [scale, setScale] = React.useState(1);
+  const { offsets, offsetOf, handlersFor, draggingId } = useDragOffsets(scale);
 
   const measure = React.useCallback(() => {
     const next: EdgeGeometry[] = [];
@@ -100,6 +102,11 @@ export function RoutingCanvas({
     }
     setEdges(next);
   }, []);
+
+  // Sigue las tarjetas mientras se arrastran.
+  React.useLayoutEffect(() => {
+    measure();
+  }, [measure, offsets]);
 
   React.useLayoutEffect(() => {
     measure();
@@ -206,11 +213,16 @@ export function RoutingCanvas({
                 ? "visited"
                 : "dim"
             : "idle";
+          const offset = offsetOf(node.id);
           return (
             <FlowNodeCard
               key={node.id}
               node={node}
               state={state}
+              dragging={draggingId === node.id}
+              dragHandlers={handlersFor(node.id)}
+              x={node.x + offset.x}
+              y={node.y + offset.y}
               ref={(el) => {
                 nodeRefs.current[node.id] = el;
               }}
@@ -225,24 +237,45 @@ export function RoutingCanvas({
 
 type NodeState = "idle" | "dim" | "visited" | "active";
 
+interface DragHandlers {
+  onPointerDown: (event: React.PointerEvent<HTMLElement>) => void;
+  onPointerMove: (event: React.PointerEvent<HTMLElement>) => void;
+  onPointerUp: (event: React.PointerEvent<HTMLElement>) => void;
+  onPointerCancel: () => void;
+}
+
 const FlowNodeCard = React.forwardRef<
   HTMLDivElement,
-  { node: FlowNode; state?: NodeState }
->(function FlowNodeCard({ node, state = "idle" }, ref) {
+  {
+    node: FlowNode;
+    state?: NodeState;
+    x: number;
+    y: number;
+    dragging?: boolean;
+    dragHandlers?: DragHandlers;
+  }
+>(function FlowNodeCard(
+  { node, state = "idle", x, y, dragging = false, dragHandlers },
+  ref,
+) {
     const Icon = flowIcons[node.icon];
     const isWhatsApp = node.icon === "whatsapp";
 
     return (
       <div
         ref={ref}
+        {...dragHandlers}
         className={cn(
-          "absolute w-[280px] rounded-[24px] transition-all duration-300",
+          "absolute w-[280px] cursor-grab touch-none select-none rounded-[24px]",
+          dragging
+            ? "z-20 cursor-grabbing shadow-[0px_18px_36px_-12px_rgba(38,36,110,0.35)]"
+            : "transition-all duration-300",
           state === "dim" && "opacity-45",
           state === "active" && "sim-active z-10",
           state === "visited" &&
             "shadow-[0_0_0_1.5px_rgb(129_140_248_/_0.9)]",
         )}
-        style={{ left: node.x, top: node.y }}
+        style={{ left: x, top: y }}
       >
         <TextureCardStyled>
           <div className="rounded-[20px] bg-white">

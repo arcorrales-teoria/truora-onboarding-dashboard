@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowUpRight,
   ChartColumn,
+  Headset,
   CircleCheck,
   LayoutDashboard,
   Menu,
@@ -64,6 +65,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const title = PAGE_TITLES[pathname] ?? "Resumen del flujo";
   const [collapsed, setCollapsed] = React.useState(false);
 
+  // Recuerda el estado del menú entre visitas.
+  React.useEffect(() => {
+    setCollapsed(localStorage.getItem("truora-demo:sidebar") === "collapsed");
+  }, []);
+  const toggleCollapsed = React.useCallback(() => {
+    setCollapsed((value) => {
+      localStorage.setItem(
+        "truora-demo:sidebar",
+        value ? "expanded" : "collapsed",
+      );
+      return !value;
+    });
+  }, []);
+
   return (
     <BrowserWindow
       variant="chrome"
@@ -74,7 +89,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       showSidebar={false}
       className="h-auto! max-w-none! w-full mask-none! bg-white shadow-xl shadow-indigo-950/5"
     >
-      <div className="flex min-h-[720px]">
+      <div className="flex min-h-[calc(100dvh-8rem)]">
         {/* Barra lateral propia (los ítems del BrowserWindow no navegan) */}
         <aside
           className={cn(
@@ -97,18 +112,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 draggable={false}
               />
             ) : (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/truora-logo.svg"
-                  alt="Truora"
-                  className="h-6 w-auto"
-                  draggable={false}
-                />
-                <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[10.5px] font-medium text-indigo-700">
-                  Demo
-                </span>
-              </>
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src="/truora-logo.svg"
+                alt="Truora"
+                className="h-6 w-auto"
+                draggable={false}
+              />
             )}
           </div>
 
@@ -136,7 +146,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           >
             <button
               type="button"
-              onClick={() => setCollapsed((v) => !v)}
+              onClick={toggleCollapsed}
               aria-label={
                 collapsed ? "Expandir barra lateral" : "Colapsar barra lateral"
               }
@@ -168,7 +178,26 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <ExpertCta />
         </div>
       </div>
+
+      <FloatingExpertCta />
     </BrowserWindow>
+  );
+}
+
+/** Botón flotante: la asesoría siempre a un clic, sin importar el scroll. */
+function FloatingExpertCta() {
+  return (
+    <a
+      href={EXPERT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-5 right-5 z-50 block rounded-full border border-black/10 bg-gradient-to-b from-indigo-300/90 to-indigo-500 p-[1px] shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_10px_24px_-6px_rgba(79,70,229,0.55)] transition-[transform,box-shadow] duration-200 hover:shadow-[0px_2px_2px_rgba(20,21,38,0.12),0px_14px_30px_-6px_rgba(79,70,229,0.65)] active:translate-y-[1px]"
+    >
+      <span className="flex items-center gap-2 rounded-full bg-gradient-to-b from-indigo-400 to-indigo-600 py-2.5 pl-4 pr-5 text-[13px] font-medium text-white/95 shadow-[inset_0px_1px_0px_rgba(255,255,255,0.4),inset_0px_-1.5px_1px_rgba(30,27,110,0.35)]">
+      <Headset className="size-4" strokeWidth={1.75} aria-hidden />
+      Agendar una asesoría
+      </span>
+    </a>
   );
 }
 
