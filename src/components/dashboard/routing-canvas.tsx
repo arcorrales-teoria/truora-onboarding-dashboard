@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 
 import { flowIcons } from "./icons";
 import { useDragOffsets } from "./use-drag-offsets";
+import { usePanScroll } from "./use-pan-scroll";
 
 interface EdgeGeometry {
   key: string;
@@ -70,7 +71,7 @@ export function RoutingCanvas({
 }: RoutingCanvasProps) {
   const nodeRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const outerRef = React.useRef<HTMLDivElement>(null);
+  const { ref: outerRef, handlers: panHandlers, panning } = usePanScroll<HTMLDivElement>();
   const [edges, setEdges] = React.useState<EdgeGeometry[]>([]);
   const [scale, setScale] = React.useState(1);
   const { offsets, offsetOf, handlersFor, draggingId } = useDragOffsets(scale);
@@ -131,7 +132,12 @@ export function RoutingCanvas({
   return (
     <div
       ref={outerRef}
-      className="overflow-x-auto rounded-[24px] border border-neutral-200/80 bg-white"
+      {...panHandlers}
+      className={cn(
+        "overflow-x-auto rounded-[24px] border border-neutral-200/80 bg-white",
+        panning ? "cursor-grabbing select-none" : "cursor-grab",
+      )}
+      style={{ touchAction: "pan-y" }}
     >
       <div
         style={{
@@ -265,6 +271,7 @@ const FlowNodeCard = React.forwardRef<
       <div
         ref={ref}
         {...dragHandlers}
+        data-canvas-card
         className={cn(
           "absolute w-[280px] cursor-grab touch-none select-none rounded-[24px]",
           dragging

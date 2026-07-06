@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/texture-card";
 import { cn } from "@/lib/utils";
 
+import { usePanScroll } from "@/components/dashboard/use-pan-scroll";
+
 /* ── Escenografía de la animación ────────────────────────────────────── */
 
 const W = 1116;
@@ -206,6 +208,7 @@ export function LivePreview() {
   const [step, setStep] = React.useState(0);
   const [reduced, setReduced] = React.useState(false);
   const [notified, setNotified] = React.useState(false);
+  const { ref: panRef, handlers: panHandlers, panning } = usePanScroll<HTMLDivElement>();
 
   React.useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -235,7 +238,15 @@ export function LivePreview() {
             Próximamente
           </span>
 
-          <div className="overflow-x-auto">
+          <div
+            ref={panRef}
+            {...panHandlers}
+            className={cn(
+              "overflow-x-auto",
+              panning ? "cursor-grabbing select-none" : "cursor-grab",
+            )}
+            style={{ touchAction: "pan-y" }}
+          >
             <div
               className="dot-grid relative mx-auto"
               style={{ width: W, height: H }}

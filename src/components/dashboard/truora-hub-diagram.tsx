@@ -21,6 +21,7 @@ import { TextureCardStyled, TextureSeparator } from "@/components/ui/texture-car
 import { cn } from "@/lib/utils";
 
 import { useDragOffsets, type Offset } from "./use-drag-offsets";
+import { usePanScroll } from "./use-pan-scroll";
 
 /**
  * Diagrama "Truora en el centro": los canales del cliente entran por la
@@ -150,7 +151,7 @@ function connector(card: SideCard, cardOffset: Offset, hubOffset: Offset) {
 const MIN_SCALE = 0.6;
 
 export function TruoraHubDiagram() {
-  const outerRef = React.useRef<HTMLDivElement>(null);
+  const { ref: outerRef, handlers: panHandlers, panning } = usePanScroll<HTMLDivElement>();
   const [scale, setScale] = React.useState(1);
   const { offsetOf, handlersFor, draggingId } = useDragOffsets(scale);
   const hubOffset = offsetOf("hub");
@@ -169,7 +170,12 @@ export function TruoraHubDiagram() {
   return (
     <div
       ref={outerRef}
-      className="overflow-x-auto rounded-[24px] border border-neutral-200/80 bg-white"
+      {...panHandlers}
+      className={cn(
+        "overflow-x-auto rounded-[24px] border border-neutral-200/80 bg-white",
+        panning ? "cursor-grabbing select-none" : "cursor-grab",
+      )}
+      style={{ touchAction: "pan-y" }}
     >
       <div style={{ width: W * scale, height: H * scale }}>
         <div
@@ -239,6 +245,7 @@ export function TruoraHubDiagram() {
             <div
               key={card.id}
               {...handlersFor(card.id)}
+              data-canvas-card
               className={cn(
                 "absolute cursor-grab touch-none select-none rounded-[24px]",
                 draggingId === card.id &&
@@ -288,6 +295,7 @@ export function TruoraHubDiagram() {
           {/* Hub central: Truora */}
           <div
             {...handlersFor("hub")}
+            data-canvas-card
             className={cn(
               "absolute cursor-grab touch-none select-none rounded-[24px]",
               draggingId === "hub" && "z-20 cursor-grabbing",
